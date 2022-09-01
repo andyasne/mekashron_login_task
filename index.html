@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mekashron login</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Clean.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="http://raw.github.com/doedje/jquery.soap/master/jquery.soap.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.soap.js"></script>
+  
+  <script type="text/javascript">
+
+      $(document).ready(function () {
+
+          $("#btnCallWebService").click(function (event) {
+            $(".alert").show();
+
+            let username =$("#username").get(0).value; 
+            let password = $("#password").get(0).value; 
+         
+              $.soap({
+                   url: "http://isapi.icu-tech.com/icutech-test.dll/",
+                  method: 'Login',
+              
+                  data: {
+                      UserName: username,
+                      Password: password
+                  },
+              
+                  success: processSuccess,
+                  error: processError
+              });
+
+
+          });
+      });
+
+      function processSuccess(data, status, req) {  
+          if (status == "success")
+              $("#response").text($(req.responseXML).find("Result").text());
+              $('#successModal').modal('show'); 
+              $('#successmsg').append(req.responseXML);
+            
+      }
+
+      function processError(data, status, req) {
+        $('#failModal').modal('show'); 
+        $('#failmsg').append('CROSS ERROR : '+data.status); 
+      } 
+
+  </script>
+</head>
+
+<body>
+ 
+
+    <div class="login-clean">
+       
+        <header>
+            <div class="container">
+                <div class="row no-gutters">
+                    <div class="col-4 offset-0 offset-lg-1"><label class="col-form-label" style="font-size:24;font-weight:bold;">LOGO</label></div>
+                    <div class="col-6 align-self-center">
+                        <p class="text-left"><a href="#">Menu 1</a>&nbsp;|&nbsp;<a href="#">Menu 2</a>&nbsp;|&nbsp;<a href="#">Menu 3</a></p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <form method="post">
+            <h2 class="sr-only">Login Form</h2>
+            <div class="illustration"></div>
+            <div class="form-group"><label>Username:</label>
+            <input class="form-control" type="text" id="username" >
+        
+        </div>
+            <label>Password:</label>
+            <div class="form-group"><input class="form-control" type="password" name="password" id="password" ></div>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="button" id="btnCallWebService">Submit</button></div>
+        </form>
+
+        <div class="container">
+          <div class="modal fade" id="successModal" role="dialog">
+              <div class="modal-dialog">
+                  <div class="alert alert-success alert-dismissible">
+                      <a  class="close" data-dismiss="modal" aria-label="close">&times;</a>
+                      <strong>Success!</strong> <p id ="successmsg"> </p>
+                    </div>
+              </div>
+            </div>
+
+            <div class="modal fade" id="failModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="alert alert-success alert-dismissible">
+                        <a  class="close" data-dismiss="modal" aria-label="close">&times;</a>
+                        <strong>Success!</strong> <p id ="failmsg"> </p>
+                      </div>
+                </div>
+              </div>
+       
+    </div>
+ 
+   
+</body>
+
+</html>
